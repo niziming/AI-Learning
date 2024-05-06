@@ -1,25 +1,23 @@
 # 目标检测
 import cv2
+import numpy as np
 
-# 加载预训练的 Haar 特征分类器文件
-cascade_file = 'path/to/haarcascade_frontalface_default.xml'  # 替换为实际的文件路径
-cascade = cv2.CascadeClassifier(cascade_file)
+# 加载游戏画面和小鸟模板
+game_screen = cv2.imread('../resources/game_frame.png')
+bird_template = cv2.imread('../resources/bird.png')
 
-# 加载图像
-image_file = 'path/to/image.jpg'  # 替换为实际的图像文件路径
-image = cv2.imread(image_file)
+# 使用模板匹配算法
+result = cv2.matchTemplate(game_screen, bird_template, cv2.TM_CCOEFF_NORMED)
 
-# 转换图像为灰度图
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# 设置匹配阈值
+threshold = 0.8
+locations = np.where(result >= threshold)
 
-# 使用 Haar 特征分类器进行目标检测
-objects = cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+# 绘制检测结果
+for pt in zip(*locations[::-1]):
+    cv2.rectangle(game_screen, pt, (pt[0] + bird_template.shape[1], pt[1] + bird_template.shape[0]), (0, 255, 255), 1)
 
-# 在图像上标记检测到的目标
-for (x, y, w, h) in objects:
-    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
-# 显示结果图像
-cv2.imshow('Detected Objects', image)
+# 显示检测结果
+cv2.imshow('Detection Result', game_screen)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

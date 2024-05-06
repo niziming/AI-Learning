@@ -45,12 +45,12 @@ def test(dataloader, device, model):
 
 
 def main():
-    print('loading training data...')
+    print('loading training resources...')
     train_data = datasets.MNIST(
-        root='./data', train=True, download=True, transform=ToTensor())
-    print('loading test data...')
+        root='./resources', train=True, download=True, transform=ToTensor())
+    print('loading test resources...')
     test_data = datasets.MNIST(
-        root='./data', train=False, download=True, transform=ToTensor())
+        root='./resources', train=False, download=True, transform=ToTensor())
 
     train_dataloader = DataLoader(train_data, batch_size=64)
     test_dataloader = DataLoader(test_data, batch_size=64)

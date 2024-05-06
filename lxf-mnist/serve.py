@@ -45,7 +45,7 @@ def api():
     prob = probs[predict]
     print(f'predict: {predict}, prob: {prob}, probs: {probs}')
     return jsonify({
-        'result': predict,
+        'GAME': predict,
         'probability': prob.item()
     })
 
